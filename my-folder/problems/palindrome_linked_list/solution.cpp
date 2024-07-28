@@ -9,34 +9,31 @@
  * };
  */
 class Solution {
-    public:
+public:
     bool isPalindrome(ListNode* head) {
-        int stk[10*10*10*10*10];
-        int i=0;
-        bool ans = true;
-
-        ListNode* ptr = head;
-
-        while(ptr!=NULL){
-            int x = ptr->val;
-            stk[i++]=x;
-            ptr = ptr->next;
-        }
-
-        ptr = head;
-        
-        while(ptr!=NULL){
-            i--;
-            int x = ptr->val;
-            if(x!=stk[i]){
-                ans = false;
+        ListNode *slow=head,*fast=head;
+        stack<int> stk;
+        while(fast != nullptr){
+            if(fast->next == nullptr){break;}
+            else if( fast->next->next== nullptr){
+                stk.push(slow->val);
+                break;
             }
-            ptr = ptr->next;
+            stk.push(slow->val);
+            slow=slow->next;
+            fast= fast->next->next;
+        }
+        slow=slow->next;
+        
+        bool ans = true;
+        while(!stk.empty()){
+            if(stk.top() != slow->val){
+                return false;
+            }
+            stk.pop();
+            slow=slow->next;
         }
 
         return ans;
     }
-
-    
-
 };
